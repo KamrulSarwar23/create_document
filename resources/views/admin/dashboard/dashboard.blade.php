@@ -18,7 +18,7 @@
                             <div class="row">
 
                                 <div class="col-xl-4 col-6 col-md-4">
-                                    <a class="wsus__dashboard_item blue" href="">
+                                    <a class="wsus__dashboard_item blue" href="javascript:;">
                                         <i class="fas fa-user-shield"></i>
                                         <p>My Total Post</p>
                                         <h5 class="text-light">{{ $mytotalpost }}</h5>
@@ -26,7 +26,7 @@
                                 </div>
 
                                 <div class="col-xl-4 col-6 col-md-4">
-                                    <a class="wsus__dashboard_item blue" href="">
+                                    <a class="wsus__dashboard_item blue" href="javascript:;">
                                         <i class="fas fa-user-shield"></i>
                                         <p>My Total Public Post</p>
                                         <h5 class="text-light">{{ $mytotalpublicpost }}</h5>
@@ -34,7 +34,7 @@
                                 </div>
 
                                 <div class="col-xl-4 col-6 col-md-4">
-                                    <a class="wsus__dashboard_item blue" href="">
+                                    <a class="wsus__dashboard_item blue" href="javascript:;">
                                         <i class="fas fa-star"></i>
                                         <p>My Total Private Post</p>
                                         <h5 class="text-light">{{ $mytotalprivatepost }}</h5>

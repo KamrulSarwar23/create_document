@@ -24,9 +24,12 @@
     </style>
 </head>
 <body>
-    <div class="container my-5">
+    <div class="container">
 
-
+        <div class="col-md-12 text-center py-5 bg-info text-light">
+            <h2>Stay Organized, Stay Productive</h2>
+            <h4>Manage your data efficiently and achieve your goals effortlessly.</h4>
+        </div>
 
         <div class="row justify-content-center">
             <div class="col-md-12">

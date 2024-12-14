@@ -37,9 +37,9 @@
 </head>
 
 <body>
-    <div class="container my-4">
+    <div class="container">
 
-        <div class="col-md-12 text-center py-4 bg-info text-light">
+        <div class="col-md-12 text-center py-5 bg-info text-light">
             <h2>Stay Organized, Stay Productive</h2>
             <h4>Manage your data efficiently and achieve your goals effortlessly.</h4>
         </div>
@@ -54,7 +54,7 @@
                             <div class="col-md-3 col-sm-6 d-flex align-items-center">
                                 <input type="text" class="form-control me-2" placeholder="Search Here" name="search"
                                     value="{{ $search }}">
-                                <button type="submit" class="btn btn-info">Search</button>
+                                <button type="submit" class="btn btn-info text-light">Search</button>
                             </div>
 
                             <!-- Category Dropdown and Button -->
@@ -69,7 +69,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-info ms-2">Filter</button>
+                                <button type="submit" class="btn btn-info ms-2 text-light">Filter</button>
                             </div>
 
                             <div class="col-md-3 col-sm-6 d-flex align-items-center">
@@ -81,7 +81,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-info ms-2">Filter</button>
+                                <button type="submit" class="btn btn-info ms-2 text-light">Filter</button>
                             </div>
 
                             <!-- Authentication Links -->
@@ -89,16 +89,16 @@
                                 @auth
                                     @if (auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.dashboard') }}"
-                                            class="btn btn-success btn-login">Dashboard</a>
+                                            class="btn btn-success btn-login text-light">Dashboard</a>
                                     @else
                                         <a href="{{ route('user.dashboard') }}"
-                                            class="btn btn-success btn-login">Dashboard</a>
+                                            class="btn btn-success btn-login text-light">Dashboard</a>
                                     @endif
                                 @endauth
 
                                 @guest
-                                    <a href="{{ route('login') }}" class="btn btn-success me-2">Login</a>
-                                    <a href="{{ route('register') }}" class="btn btn-info">Register</a>
+                                    <a href="{{ route('login') }}" class="btn btn-success text-light me-2">Login</a>
+                                    <a href="{{ route('register') }}" class="btn btn-primary text-light">Register</a>
                                 @endguest
                             </div>
                         </form>
