@@ -17,7 +17,7 @@
 
         <li class="{{ request()->routeIs('user.documents.index') ? 'active' : '' }}"><a class="" href="{{ route('user.documents.index') }}"><i
                     class="far fa-clipboard"></i>My Documents</a></li>
-        <li class="{{ request()->routeIs('user.all.document') ? 'active' : '' }}"><a class="" href="{{ route('user.all.document') }}"><i class="far fa-clipboard"></i>All
+        <li class="{{ request()->routeIs('user.all.document') ? 'active' : '' }}"><a class="" href="{{ route('user.all.document') }}"><i class="far fa-clipboard"></i>Public
                 Documents</a></li>
 
 

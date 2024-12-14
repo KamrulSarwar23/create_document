@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Documentation;
 use App\Models\DocumentFile;
 use App\Models\User;
+use Dotenv\Util\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -36,7 +37,9 @@ class DocumentationController extends Controller
     public function allDocument()
     {
 
-        $alldocuments = Documentation::with('user')->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
+        $alldocuments = Documentation::whereHas('user', function($query){
+            $query->where('role', 'user');
+        })->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
 
         return view('admin.documents.allDocument', compact('alldocuments'));
     }
@@ -113,6 +116,18 @@ class DocumentationController extends Controller
         
     }
 
+    public function publicDocumentShow(string $id){
+
+        $item = Documentation::with('files')->findOrFail($id);
+
+        if ($item->user_id !== Auth::user()->id && $item->status === 'private') {
+            toastr()->error('You Can Not Access Other Documents');
+            return redirect()->back();
+        }
+
+        return view('admin.documents.publicDocumentShow', compact('item'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -120,12 +135,23 @@ class DocumentationController extends Controller
     {
         $document = Documentation::findOrFail($id);
 
-        if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You Can Not Edit Other Documents');
-            return redirect()->back();
-        }
+        // if ($document->user_id !== Auth::user()->id) {
+        //     toastr()->error('You Can Not Edit Other Documents');
+        //     return redirect()->back();
+        // }
 
         return view('admin.documents.edit', compact('document'));
+    }
+
+    public function publicDocumentEdit(string $id){
+        $document = Documentation::findOrFail($id);
+
+        // if ($document->user_id !== Auth::user()->id) {
+        //     toastr()->error('You Can Not Edit Other Documents');
+        //     return redirect()->back();
+        // }
+
+        return view('admin.documents.publicdocumentedit', compact('document'));
     }
 
     /**
@@ -137,10 +163,10 @@ class DocumentationController extends Controller
         $document = Documentation::findOrFail($id);
 
         // Check if the authenticated user owns the document
-        if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You cannot edit other users\' documents.');
-            return redirect()->back();
-        }
+        // if ($document->user_id !== Auth::user()->id) {
+        //     toastr()->error('You cannot edit other users\' documents.');
+        //     return redirect()->back();
+        // }
 
         // Validate the request
         $request->validate([
@@ -162,7 +188,6 @@ class DocumentationController extends Controller
         ];
 
         $document->update($data);
-
 
         if ($request->hasFile('files')) {
 
@@ -190,15 +215,71 @@ class DocumentationController extends Controller
         return redirect()->route('admin.documents.index');
     }
 
+    public function publicDocumentUpdate(Request $request, String $id){
+          // Find the documentation record
+        $document = Documentation::findOrFail($id);
+
+        // Check if the authenticated user owns the document
+        // if ($document->user_id !== Auth::user()->id) {
+        //     toastr()->error('You cannot edit other users\' documents.');
+        //     return redirect()->back();
+        // }
+
+        // Validate the request
+        $request->validate([
+            'topic' => ['required'],
+            'category' => ['nullable'],
+            'source' => ['nullable'],
+            'description' => ['required'],
+            'files.*' => ['nullable', 'file'],
+        ]);
+
+
+        $data = [
+            'topic' => $request->topic,
+            'category' => $request->category,
+            'source' => $request->source,
+            'description' => $request->description,
+            'is_approved' => $request->is_approved,
+        ];
+
+        $document->update($data);
+
+        if ($request->hasFile('files')) {
+
+            foreach ($document->files as $existingFile) {
+
+                if (File::exists(public_path($existingFile->files))) {
+                    File::delete(public_path($existingFile->files));
+                }
+
+                $existingFile->delete();
+            }
+
+            foreach ($request->file('files') as $file) {
+                $ext = $file->getClientOriginalExtension();
+                $fileName = 'document-' . rand() . '.' . $ext;
+                $file->move(public_path('uploads'), $fileName);
+
+                $document->files()->create([
+                    'files' => 'uploads/' . $fileName,
+                ]);
+            }
+        }
+
+        toastr()->success('Data has been updated successfully!');
+        return redirect()->route('admin.all.document');
+    }
+
 
     public function destroy(string $id)
     {
         $document = Documentation::findOrFail($id);
 
-        if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You Can Not Delete Other Documents');
-            return redirect()->back();
-        }
+        // if ($document->user_id !== Auth::user()->id) {
+        //     toastr()->error('You Can Not Delete Other Documents');
+        //     return redirect()->back();
+        // }
 
         foreach ($document->files as $existingFile) {
 

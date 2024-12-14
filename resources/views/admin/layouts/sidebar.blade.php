@@ -18,7 +18,7 @@
 
         <li class="{{ request()->routeIs('admin.documents.index') ? 'active' : '' }}"><a class="" href="{{ route('admin.documents.index') }}"><i class="far fa-clipboard"></i>My Documents</a></li>
 
-        <li class="{{ request()->routeIs('admin.all.document') ? 'active' : '' }}"><a class="" href="{{ route('admin.all.document') }}"><i class="far fa-clipboard"></i>All Documents</a></li>
+        <li class="{{ request()->routeIs('admin.all.document') ? 'active' : '' }}"><a class="" href="{{ route('admin.all.document') }}"><i class="far fa-clipboard"></i>Public Documents</a></li>
 
         <li class="{{ request()->routeIs('admin.profile') ? 'active' : '' }}"><a href="{{ route('admin.profile') }}"><i
                     class="far fa-clipboard"></i> My Profile</a></li>

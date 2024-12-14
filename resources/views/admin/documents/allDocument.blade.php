@@ -27,7 +27,7 @@
 
 
                                             <div class="mb-4">
-                                                <a href="{{ route('admin.documents.show', $item->id) }}" class="text-primary">
+                                                <a href="{{ route('admin.public.document.show', $item->id) }}" class="text-primary">
                                                 <div class="card-body">
                                                     <!-- Header Section -->
                                                     <div class="d-flex justify-content-between align-items-start">
@@ -35,13 +35,15 @@
 
 
 
-                                                        @if ($item->status === 'private')
+                                                        @if ($item->is_approved === 'approved')
                                                             <span
-                                                                class="badge bg-success text-uppercase">{{ $item->status }}</span>
+                                                                class="badge bg-success text-uppercase">{{ $item->is_approved }}</span>
+                                                              
                                                         @else
-                                                            <span
-                                                                class="badge bg-info text-uppercase">{{ $item->status }}</span>
+                                                            <span class="badge bg-info text-uppercase">{{ $item->is_approved }}</span>
                                                         @endif
+
+                                                     
 
                                                     </div>
 
@@ -63,7 +65,7 @@
                                                         style="max-height: 80px; overflow: hidden;">
                                                         {!! \Illuminate\Support\Str::limit($item->description, 1000) !!}
                                                     </p>
-                                                    <a href="{{ route('admin.documents.show', $item->id) }}"
+                                                    <a href="{{ route('admin.public.document.show', $item->id) }}"
                                                         class="text-primary">See more...</a>
 
                                                     <!-- Footer Section -->
@@ -72,28 +74,20 @@
 
                                                         </div>
 
-                                                        @if ($item->user_id === auth()->user()->id)
+                                                        {{-- @if ($item->user_id === auth()->user()->id) --}}
                                                             <div>
-                                                                <a href="{{ route('admin.documents.edit', $item->id) }}"
+                                                                <a href="{{ route('admin.public.document.edit', $item->id) }}"
                                                                     class="btn btn-warning btn-sm">
                                                                     <i class="bi bi-pencil"></i>
                                                                 </a>
-                                                                {{-- <form
-                                                                    action="{{ route('admin.documents.destroy', $item->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button class="btn btn-danger btn-sm mt-2">
-                                                                        <i class="bi bi-trash"></i>
-                                                                    </button>
-                                                                </form> --}}
+                                            
 
                                                                 <a href="{{ route('admin.documents.destroy', $item->id) }}" class="delete-item btn btn-warning btn-sm">
                                                                     <i class="bi bi-trash"></i>
                                                                 </a>
 
                                                             </div>
-                                                        @endif
+                                                        {{-- @endif --}}
 
 
                                                     </div>

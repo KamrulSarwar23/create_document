@@ -9,7 +9,8 @@
 
     <title> @yield('title') </title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    {{-- <link rel="icon" type="image/png" href=""> --}}
+
+    <link rel="icon" href="{{ asset('/favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('assets/dashboard/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/dashboard/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/dashboard/css/select2.min.css') }}">

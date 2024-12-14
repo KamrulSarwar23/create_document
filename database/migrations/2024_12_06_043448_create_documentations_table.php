@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('source')->nullable();
             $table->longText('description');
+            $table->enum('is_approved', ['approved', 'pending'])->default('pending');
             $table->enum('status', ['public', 'private'])->default('private');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Add the foreign key constraint
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

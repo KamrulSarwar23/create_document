@@ -29,6 +29,10 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin'], 'prefix' => 'a
 
     Route::resource('/documents', DocumentationController::class);
     Route::get('/all/documents', [DocumentationController::class, 'allDocument'])->name('all.document');
+    Route::get('/all/documents/show/{id}', [DocumentationController::class, 'publicDocumentShow'])->name('public.document.show');
+    Route::get('/all/documents/edit/{id}', [DocumentationController::class, 'publicDocumentEdit'])->name('public.document.edit');
+    Route::put('/all/documents/update/{id}', [DocumentationController::class, 'publicDocumentUpdate'])->name('public.document.update');
+
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
@@ -44,9 +48,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user'], 'prefix' => 'us
     })->name('dashboard');
 
     Route::get('/dashboard', [UserDocumentController::class, 'dashboard'] )->name('dashboard');
-
     Route::resource('/documents', UserDocumentController::class);
-    
     Route::get('/all/documents', [UserDocumentController::class, 'allDocument'])->name('all.document');
 
     Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
