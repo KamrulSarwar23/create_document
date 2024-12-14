@@ -40,7 +40,7 @@ class UserDocumentController extends Controller
             $query->where('category', 'LIKE', "%{$categorysearch}%");
         }
     
-        $alldocuments = $query->where('status', 'public')->paginate(5);
+        $alldocuments = $query->where('status', 'public')->where('is_approved', 'approved')->paginate(5);
 
         $categories = Documentation::whereNotNull('category' )->pluck('category')->unique();
         
@@ -54,8 +54,8 @@ class UserDocumentController extends Controller
         $item = Documentation::with('files')->findOrFail($id);
 
 
-        if ($item->status === 'private') {
-            toastr()->error('You Can Not Access Other Documents');
+        if ($item->status === 'private' || $item->status === 'public' && $item->is_approved === 'pending') {
+            toastr()->error('You Can Not Access');
             return redirect()->back();
         }
 
@@ -83,7 +83,9 @@ class UserDocumentController extends Controller
     public function allDocument()
     {
 
-        $alldocuments = Documentation::with('user')->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
+        $alldocuments = Documentation::whereHas('user', function($query){
+            $query->whereNot('id', Auth::user()->id);
+        })->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
 
         return view('user.documents.allDocument', compact('alldocuments'));
     }
