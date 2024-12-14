@@ -38,6 +38,11 @@
 
 <body>
     <div class="container my-4">
+
+        <div class="col-md-12 text-center py-4 bg-info text-light">
+            <h2>Stay Organized, Stay Productive</h2>
+            <h4>Manage your data efficiently and achieve your goals effortlessly.</h4>
+        </div>
         <!-- Search Header -->
         <div class="row mb-4">
             <div class="col-12">
@@ -46,14 +51,14 @@
                         <form class="row g-3 align-items-center" action="{{ route('public.document') }}" method="GET">
 
                             <!-- Search Input and Button -->
-                            <div class="col-md-4 col-sm-6 d-flex align-items-center">
+                            <div class="col-md-3 col-sm-6 d-flex align-items-center">
                                 <input type="text" class="form-control me-2" placeholder="Search Here" name="search"
                                     value="{{ $search }}">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-info">Search</button>
                             </div>
 
                             <!-- Category Dropdown and Button -->
-                            <div class="col-md-4 col-sm-6 d-flex align-items-center">
+                            <div class="col-md-3 col-sm-6 d-flex align-items-center">
                                 <select name="category" id="category-select" class="form-control">
                                     <option disabled value="" {{ empty($categorysearch) ? 'selected' : '' }}>
                                         Select Category</option>
@@ -67,10 +72,20 @@
                                 <button type="submit" class="btn btn-info ms-2">Filter</button>
                             </div>
 
-
+                            <div class="col-md-3 col-sm-6 d-flex align-items-center">
+                                <select name="user" id="user-select" class="form-control">
+                                    <option disabled value="" {{ empty($usersearch) ? 'selected' : '' }}>Select Author</option>
+                                    @foreach ($SearchByuser as $user)
+                                        <option {{$user->id == $usersearch ? 'selected' : ''}} value="{{ $user->id }}">
+                                            {{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-info ms-2">Filter</button>
+                            </div>
 
                             <!-- Authentication Links -->
-                            <div class="col-md-4 col-sm-12 text-end">
+                            <div class="col-md-3 col-sm-12 text-end">
                                 @auth
                                     @if (auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.dashboard') }}"
@@ -97,7 +112,7 @@
             <div class="col-md-12">
 
                 <div class="col-md-2">
-                    @if ($search || $categorysearch)
+                    @if ($search || $categorysearch || $usersearch)
                         <a href="{{ route('public.document') }}" class="btn btn-danger mb-2">Reset Filter</a>
                     @endif
 

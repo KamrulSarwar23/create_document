@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Documentation;
 use App\Models\DocumentFile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -16,6 +17,8 @@ class UserDocumentController extends Controller
         $search = $request->search;
 
         $categorysearch = $request->category;
+
+        $usersearch = $request->user;
 
         $query = Documentation::query();
 
@@ -40,12 +43,16 @@ class UserDocumentController extends Controller
             $query->where('category', 'LIKE', "%{$categorysearch}%");
         }
 
+        if($usersearch){
+            $query->where('user_id', 'LIKE', "%{$usersearch}%");
+        }
+
         $alldocuments = $query->where('status', 'public')->where('is_approved', 'approved')->latest()->paginate(5);
 
         $categories = Documentation::whereNotNull('category' )->pluck('category')->unique();
+        $SearchByuser = User::with('documentations')->get();
 
-
-        return view('PublicDocument', compact('alldocuments', 'search', 'categories', 'categorysearch'));
+        return view('PublicDocument', compact('alldocuments', 'search', 'categories', 'categorysearch', 'SearchByuser', 'usersearch'));
     }
 
 
