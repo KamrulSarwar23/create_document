@@ -54,7 +54,7 @@
                                                 </div>
                                             </div>
 
-                                      
+
 
                                             <p class="card-text text-truncate" style="max-height: 80px; overflow: hidden;">
                                                 {!! $item->description !!}
@@ -68,7 +68,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            
+
 
                                             <!-- Footer Section -->
                                             <div class="mt-3 d-flex justify-content-between align-items-center">

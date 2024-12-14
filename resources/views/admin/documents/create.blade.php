@@ -19,9 +19,9 @@
                             <div class="wsus__dash_pro_area">
                                 <form action="{{ route('admin.documents.store') }}" method="POST"
                                     enctype="multipart/form-data">
-                                    
+
                                     @csrf
-                                    
+
                                     <div class="form-group wsus_input">
                                         <label>Topic</label>
                                         <input type="text" class="form-control"name="topic" value="{{ old('topic') }}"
@@ -45,11 +45,11 @@
                                     <div class="form-group wsus_input">
                                         <label>Description</label>
                                         <textarea class="ckeditor" name="description" id="" cols="30" rows="5">
-                                            
+
                                         </textarea>
                                     </div>
 
-                                    
+
                                     <div class="form-group wsus_input">
                                         <label>Upload Multiple Files</label>
                                         <input type="file" class="form-control" name="files[]" value=""
@@ -62,6 +62,14 @@
                                         <select id="inputState" class="form-control" name="status">
                                             <option value="private">Private</option>
                                             <option value="public">Public</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group wsus_input">
+                                        <label for="inputState">Approved/Pending</label>
+                                        <select id="inputState" class="form-control" name="is_approved">
+                                            <option value="approved">Approved</option>
+                                            <option value="pending">Pending</option>
                                         </select>
                                     </div>
 

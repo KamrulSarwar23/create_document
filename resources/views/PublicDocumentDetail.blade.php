@@ -26,13 +26,13 @@
 <body>
     <div class="container my-5">
 
+
+
         <div class="row justify-content-center">
             <div class="col-md-12">
 
                 <div class="card mb-3 shadow-sm">
-                   
-                        
-            
+
                     <div class="card-body">
                     <a class="btn btn-success mb-2" href="{{ route('public.document') }}">back</a>
                         <!-- Header Section -->
@@ -44,7 +44,7 @@
                             <span class="badge bg-info text-uppercase">{{ $item->status }}</span>
                         @endif
                         </div>
-                        <small class="text-muted">{{ $item->created_at->format('M d, Y h:i A') }}</small> - 
+                        <small class="text-muted">{{ $item->created_at->format('M d, Y h:i A') }}</small> -
                          <small class="text-muted">{{ $item->created_at->diffForHumans() }}</small>
 
                         <!-- Category and Source -->
@@ -57,7 +57,7 @@
                         <p class="card-text mt-3 description">
                             {!! $item->description !!}
                         </p>
-        
+
                         <div class="my-3">
 
                             @foreach ($item->files as $file)
@@ -69,10 +69,10 @@
                                 </div>
                             @endforeach
                         </div>
-                  
+
                     </div>
 
-                    
+
                 </div>
             </div>
         </div>

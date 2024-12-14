@@ -21,7 +21,7 @@ class DocumentationController extends Controller
         $mytotalpost = Documentation::where('user_id', Auth::user()->id)->count();
         $mytotalpublicpost = Documentation::where('user_id', Auth::user()->id)->where('status', 'public')->count();
         $mytotalprivatepost = Documentation::where('user_id', Auth::user()->id)->where('status', 'private')->count();
-  
+
         return view('admin.dashboard.dashboard', compact('mytotalpost', 'mytotalpublicpost', 'mytotalprivatepost'));
 
      }
@@ -30,7 +30,7 @@ class DocumentationController extends Controller
     {
 
         $alldocuments = Documentation::with('user')->where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
-        
+
         return view('admin.documents.index', compact('alldocuments', ));
     }
 
@@ -64,7 +64,8 @@ class DocumentationController extends Controller
             'source' => ['nullable'],
             'description' => ['required'],
             'status' => ['required'],
-            'files' => ['nullable']
+            'files' => ['nullable'],
+            'is_approved' => ['required']
         ]);
 
         // Initialize the data array
@@ -75,6 +76,7 @@ class DocumentationController extends Controller
             'description' => $request->description,
             'status' => $request->status,
             'user_id' => Auth::user()->id,
+            'is_approved' => $request->is_approved
         ];
 
         $document = Documentation::create($data);
@@ -108,12 +110,12 @@ class DocumentationController extends Controller
         $item = Documentation::with('files')->findOrFail($id);
 
         if ($item->user_id !== Auth::user()->id && $item->status === 'private') {
-            toastr()->error('You Can Not Access Other Documents');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
         return view('admin.documents.show', compact('item'));
-        
+
     }
 
     public function publicDocumentShow(string $id){
@@ -121,7 +123,7 @@ class DocumentationController extends Controller
         $item = Documentation::with('files')->findOrFail($id);
 
         if ($item->user_id !== Auth::user()->id && $item->status === 'private') {
-            toastr()->error('You Can Not Access Other Documents');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
@@ -176,6 +178,7 @@ class DocumentationController extends Controller
             'description' => ['required'],
             'status' => ['required'],
             'files.*' => ['nullable', 'file'],
+            'is_approved' => ['required']
         ]);
 
 
@@ -185,6 +188,7 @@ class DocumentationController extends Controller
             'source' => $request->source,
             'description' => $request->description,
             'status' => $request->status,
+            'is_approved' => $request->is_approved
         ];
 
         $document->update($data);

@@ -16,13 +16,13 @@ class UserDocumentController extends Controller
         $search = $request->search;
 
         $categorysearch = $request->category;
-    
+
         $query = Documentation::query();
-    
+
         if ($search) {
 
             $query->where(function ($query) use ($search) {
-             
+
                 $query->whereHas('user', function ($query) use ($search) {
 
                     $query->where('name', 'LIKE', "%{$search}%");
@@ -33,21 +33,21 @@ class UserDocumentController extends Controller
                 ->orWhere('description', 'LIKE', "%{$search}%")
                 ->orWhere('status', 'LIKE', "%{$search}%");
             });
-          
+
         }
 
         if ($categorysearch) {
             $query->where('category', 'LIKE', "%{$categorysearch}%");
         }
-    
-        $alldocuments = $query->where('status', 'public')->where('is_approved', 'approved')->paginate(5);
+
+        $alldocuments = $query->where('status', 'public')->where('is_approved', 'approved')->latest()->paginate(5);
 
         $categories = Documentation::whereNotNull('category' )->pluck('category')->unique();
-        
-    
+
+
         return view('PublicDocument', compact('alldocuments', 'search', 'categories', 'categorysearch'));
     }
-    
+
 
     public function PublicDocumentDetail(string $id)
     {
@@ -55,7 +55,7 @@ class UserDocumentController extends Controller
 
 
         if ($item->status === 'private' || $item->status === 'public' && $item->is_approved === 'pending') {
-            toastr()->error('You Can Not Access');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
@@ -85,7 +85,7 @@ class UserDocumentController extends Controller
 
         $alldocuments = Documentation::whereHas('user', function($query){
             $query->whereNot('id', Auth::user()->id);
-        })->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
+        })->where('is_approved', 'approved')->where('status', 'public')->orderBy('created_at', 'DESC')->paginate(5);
 
         return view('user.documents.allDocument', compact('alldocuments'));
     }
@@ -152,7 +152,7 @@ class UserDocumentController extends Controller
         $item = Documentation::with('files')->findOrFail($id);
 
         if ($item->user_id !== Auth::user()->id && $item->status === 'private') {
-            toastr()->error('You Can Not Access Other Documents');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
@@ -168,7 +168,7 @@ class UserDocumentController extends Controller
         $document = Documentation::findOrFail($id);
 
         if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You Can Not Edit Other Documents');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
@@ -184,7 +184,7 @@ class UserDocumentController extends Controller
 
         // Check if the authenticated user owns the document
         if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You cannot edit other users documents.');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 
@@ -246,7 +246,7 @@ class UserDocumentController extends Controller
         $document = Documentation::findOrFail($id);
 
         if ($document->user_id !== Auth::user()->id) {
-            toastr()->error('You Can Not Delete Other Documents');
+            toastr()->error('Unauthorized');
             return redirect()->back();
         }
 

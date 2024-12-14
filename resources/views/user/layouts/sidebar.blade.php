@@ -15,7 +15,7 @@
                 Page</a></li>
         <li class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}"><a class="" href="{{ route('user.dashboard') }}"><i class="far fa-clipboard"></i>Dashboard</a></li>
 
-        <li class="{{ request()->routeIs('user.documents.index') ? 'active' : '' }}"><a class="" href="{{ route('user.documents.index') }}"><i
+        <li class="{{ request()->routeIs(['user.documents.index', 'user.documents.create', 'user.documents.show', 'user.documents.edit']) ? 'active' : '' }}"><a class="" href="{{ route('user.documents.index') }}"><i
                     class="far fa-clipboard"></i>My Documents</a></li>
         <li class="{{ request()->routeIs('user.all.document') ? 'active' : '' }}"><a class="" href="{{ route('user.all.document') }}"><i class="far fa-clipboard"></i>Public
                 Documents</a></li>
