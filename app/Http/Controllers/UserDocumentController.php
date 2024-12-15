@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserDocumentController extends Controller
 {
@@ -50,7 +53,9 @@ class UserDocumentController extends Controller
         $alldocuments = $query->where('status', 'public')->where('is_approved', 'approved')->latest()->paginate(5);
 
         $categories = Documentation::whereNotNull('category' )->pluck('category')->unique();
-        $SearchByuser = User::with('documentations')->get();
+        $SearchByuser = User::whereHas('documentations', function($query){
+            $query->where('status', 'public ')->where('is_approved', 'approved');
+        })->get();
 
         return view('PublicDocument', compact('alldocuments', 'search', 'categories', 'categorysearch', 'SearchByuser', 'usersearch'));
     }

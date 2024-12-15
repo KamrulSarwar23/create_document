@@ -76,13 +76,15 @@
                                 <select name="user" id="user-select" class="form-control">
                                     <option disabled value="" {{ empty($usersearch) ? 'selected' : '' }}>Select Author</option>
                                     @foreach ($SearchByuser as $user)
-                                        <option {{$user->id == $usersearch ? 'selected' : ''}} value="{{ $user->id }}">
+                                        <option {{ $user->id == $usersearch ? 'selected' : '' }} value="{{ $user->id }}">
                                             {{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class="btn btn-info ms-2 text-light">Filter</button>
+
                             </div>
+
 
                             <!-- Authentication Links -->
                             <div class="col-md-3 col-sm-12 text-end">
